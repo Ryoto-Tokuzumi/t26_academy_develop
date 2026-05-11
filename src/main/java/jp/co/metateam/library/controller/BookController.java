@@ -23,7 +23,7 @@ import lombok.extern.log4j.Log4j2;
 /**
  * 書籍関連クラス
  */
-@Log4j2 
+@Log4j2
 @Controller
 public class BookController {
     
@@ -35,8 +35,8 @@ public class BookController {
     }
 
     @GetMapping("/book/index")
-    public String index(Model model) {  
-
+    public String index(Model model) {
+        // 書籍を全件取得
         List<BookMstDto> bookMstList = this.bookMstService.findAvailableWithStockCount();
         
         model.addAttribute("bookMstList", bookMstList);
