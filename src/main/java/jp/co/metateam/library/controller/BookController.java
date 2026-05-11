@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
+import jp.co.metateam.library.model.Account;
+import jp.co.metateam.library.model.AccountDto;
 import jp.co.metateam.library.model.BookMst;
 import jp.co.metateam.library.model.BookMstDto;
 import jp.co.metateam.library.service.BookMstService;
@@ -21,7 +23,7 @@ import lombok.extern.log4j.Log4j2;
 /**
  * 書籍関連クラス
  */
-@Log4j2
+@Log4j2 
 @Controller
 public class BookController {
     
@@ -33,8 +35,8 @@ public class BookController {
     }
 
     @GetMapping("/book/index")
-    public String index(Model model) {
-        // 書籍を全件取得
+    public String index(Model model) {  
+
         List<BookMstDto> bookMstList = this.bookMstService.findAvailableWithStockCount();
         
         model.addAttribute("bookMstList", bookMstList);
@@ -44,11 +46,19 @@ public class BookController {
 
     @GetMapping("/book/add")
     public String add(Model model) {
+        //情報追加画面
         if (!model.containsAttribute("bookMstDto")) {
             model.addAttribute("bookMstDto", new BookMstDto());
         }
 
         return "book/add";
     }
-    
+
+    @PostMapping("/book/add")
+    public String register(@ModelAttribute BookMstDto bookMstDto) {
+
+            bookMstService.save(bookMstDto);//ServiceのbookMstDtoに保存指示
+            return "redirect:/book/index"; //一覧に遷移
+
+    }
 }
