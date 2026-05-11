@@ -5,12 +5,16 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.micrometer.common.util.StringUtils;
+import jp.co.metateam.library.model.Account;
+import jp.co.metateam.library.model.AccountDto;
 import jp.co.metateam.library.model.BookMst;
 import jp.co.metateam.library.model.BookMstDto;
 import jp.co.metateam.library.repository.BookMstRepository;
@@ -29,7 +33,6 @@ public class BookMstService {
         List<BookMst> books = this.bookMstRepository.findLimitedBook();
         List<BookMstDto> bookMstDtoList = new ArrayList<BookMstDto>();
 
-        // 書籍の在庫数を取得
         // FIXME: 現状は書籍ID毎にDBに問い合わせている。一度のSQLで完了させたい。
         for (int i = 0; i < books.size(); i++) {
             BookMst book = books.get(i);
@@ -42,7 +45,20 @@ public class BookMstService {
 
         return bookMstDtoList;
     }
-    
+
+    @Transactional
+    public void save(BookMstDto bookMstDto) {
+            // BookMstDtoからBookMstへの変換
+            BookMst bookMst = new BookMst();
+
+            //bookMst.setId(bookMstDto.getId());
+            bookMst.setIsbn(bookMstDto.getIsbn());
+            bookMst.setTitle(bookMstDto.getTitle());
+
+            // データベースへの保存
+            this.bookMstRepository.save(bookMst);
+
+    }
 }
 
 
