@@ -29,7 +29,7 @@ public class BookMstService {
         List<BookMst> books = this.bookMstRepository.findLimitedBook();
         List<BookMstDto> bookMstDtoList = new ArrayList<BookMstDto>();
 
-        // 書籍の在庫数を取得        
+        // 書籍の在庫数を取得
         // FIXME: 現状は書籍ID毎にDBに問い合わせている。一度のSQLで完了させたい。
         for (int i = 0; i < books.size(); i++) {
             BookMst book = books.get(i);
