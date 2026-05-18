@@ -24,7 +24,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @Controller
 public class BookController {
-
+    
     private final BookMstService bookMstService;
 
     @Autowired
@@ -36,7 +36,7 @@ public class BookController {
     public String index(Model model) {
         // 書籍を全件取得
         List<BookMstDto> bookMstList = this.bookMstService.findAvailableWithStockCount();
-
+        
         model.addAttribute("bookMstList", bookMstList);
 
         return "book/index";
