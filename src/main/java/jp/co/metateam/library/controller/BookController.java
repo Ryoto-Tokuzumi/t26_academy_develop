@@ -44,11 +44,19 @@ public class BookController {
 
     @GetMapping("/book/add")
     public String add(Model model) {
+        //情報追加画面
         if (!model.containsAttribute("bookMstDto")) {
             model.addAttribute("bookMstDto", new BookMstDto());
         }
 
         return "book/add";
     }
-    
+
+    @PostMapping("/book/add")
+    public String register(@ModelAttribute BookMstDto bookMstDto) {
+
+        bookMstService.save(bookMstDto);//ServiceのbookMstDtoに保存指示
+        return "redirect:/book/index"; //一覧に遷移
+
+    }
 }
